@@ -25,9 +25,9 @@ function PizzaBlock({
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          {
-            types.map((typeId) => (
-              <li 
+          {types.map((typeId) => (
+              <li
+                key={typeId}
                 className={activeType === typeId ? 'active' : ''}
                 onClick={() => setActiveType(typeId)}
               >
@@ -39,7 +39,8 @@ function PizzaBlock({
         <ul>
           {
             sizes.map((size, i) => (
-              <li 
+              <li
+                key={size}
                 className={activeSize === i ? 'active' : ''}
                 onClick={() => setActiveSize(i)}
               >
