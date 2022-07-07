@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-function PizzaBlock({ 
+const PizzaBlock = ({ 
   title, 
   price,
   imageUrl,
   sizes,
   types,
-}) {
+}) => {
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
 
