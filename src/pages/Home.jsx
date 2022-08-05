@@ -1,18 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import Categories from '../components/Categories';
 import PizzaBlock from '../components/PizzaBlock';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import Sort from '../components/Sort';
+
 import { SearchContext } from '../App';
 
+import { setCategoryId } from '../redux/slices/filterSlice';
+
 export const Home = () => {
+  const dispatch = useDispatch();
+  const categoryId = useSelector(state => state.filter.categoryId);
+  const sortType = useSelector((state) => state.filter.sort.sortProperty);
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
-  const [sortType, setSortType] = useState({
-    name: 'популярности',
-    sortProperty: 'rating',
-  });
 
   const { searchValue } = useContext(SearchContext);
 
@@ -23,7 +27,7 @@ export const Home = () => {
     const search = searchValue ? `&search=${searchValue}` : '';
 
     fetch(
-      `https://62c6af9574e1381c0a66142d.mockapi.io/items?${category}&sortBy=${sortType.sortProperty}&order=desc${search}`,
+      `https://62c6af9574e1381c0a66142d.mockapi.io/items?${category}&sortBy=${sortType}&order=desc${search}`,
     )
       .then((res) => res.json())
       .then((arr) => {
@@ -34,11 +38,7 @@ export const Home = () => {
   }, [categoryId, sortType, searchValue]);
 
   const onClickCategory = (id) => {
-    setCategoryId(id);
-  };
-
-  const onClickSort = (id) => {
-    setSortType(id);
+    dispatch(setCategoryId(id));
   };
 
   const pizzas = items
@@ -50,8 +50,11 @@ export const Home = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories categoryId={categoryId} onClickCategory={onClickCategory} />
-        <Sort sortType={sortType} onClickSort={onClickSort} />
+        <Categories
+          categoryId={categoryId}
+          onClickCategory={onClickCategory} 
+        />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
